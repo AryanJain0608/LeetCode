@@ -1,15 +1,27 @@
 class Solution {
 public:
     vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
-        unordered_set<int> s(nums1.begin(), nums1.end());
-        unordered_set<int> result;
 
-        for (int num : nums2) {
-            if (s.count(num)) {
-                result.insert(num);
+        set<int> s;
+
+        // Put all elements of nums1 into the set
+        for (int i = 0; i < nums1.size(); i++) {
+            s.insert(nums1[i]);
+        }
+
+        vector<int> ans;
+
+        // Check which elements of nums2 are present in the set
+        for (int i = 0; i < nums2.size(); i++) {
+
+            if (s.find(nums2[i]) != s.end()) {
+                ans.push_back(nums2[i]);
+
+                // Remove it so we don't add it again
+                s.erase(nums2[i]);
             }
         }
 
-        return vector<int>(result.begin(), result.end());
+        return ans;
     }
 };
