@@ -1,36 +1,47 @@
 class Solution {
 public:
     int minimumDeletions(vector<int>& nums) {
+
         int n = nums.size();
+
+        int minValue = nums[0];
+        int maxValue = nums[0];
+
+        for (int i = 0; i < n; i++) {
+
+            if (nums[i] < minValue) {
+                minValue = nums[i];
+            }
+
+            if (nums[i] > maxValue) {
+                maxValue = nums[i];
+            }
+        }
 
         int minIndex = 0;
         int maxIndex = 0;
 
-        // Find indices of minimum and maximum
         for (int i = 0; i < n; i++) {
-            if (nums[i] < nums[minIndex]) {
+
+            if (nums[i] == minValue) {
                 minIndex = i;
             }
 
-            if (nums[i] > nums[maxIndex]) {
+            if (nums[i] == maxValue) {
                 maxIndex = i;
             }
         }
 
-        // Make sure minIndex is the smaller index
-        if (minIndex > maxIndex) {
-            swap(minIndex, maxIndex);
-        }
+        int left = min(minIndex, maxIndex);
+        int right = max(minIndex, maxIndex);
 
-        // 1. Remove both from the front
-        int fromFront = maxIndex + 1;
+        int removeFromLeft = right + 1;
 
-        // 2. Remove both from the back
-        int fromBack = n - minIndex;
+        int removeFromRight = n - left;
 
-        // 3. Remove min from front and max from back
-        int oneFrontOneBack = (minIndex + 1) + (n - maxIndex);
+        int removeFromBoth = (left + 1) + (n - right);
 
-        return min({fromFront, fromBack, oneFrontOneBack});
+        return min(removeFromLeft,
+                   min(removeFromRight, removeFromBoth));
     }
 };
